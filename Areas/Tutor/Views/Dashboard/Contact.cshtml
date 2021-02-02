@@ -1,0 +1,256 @@
+﻿@model InstantTutors.Models.ViewModels.ContactUsViewModel
+
+@{
+    ViewBag.Title = "Contact";
+}
+
+<section class="page_heading">
+</section>
+<section class="from-sec">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                @using (Html.BeginForm("Contact", "Dashboard", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <br />
+                    @Html.Raw(ViewBag.success)
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <h2>Contact Us</h2>
+                    <div class="row">
+                        <div class="col-12 col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "lbl-required" })
+                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.FirstName) } })
+                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "lbl-required" })
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Email) } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "lbl-required" })
+                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.LastName) } })
+                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Mobile, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { type = "number", @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Mobile) } })
+                                @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                @*<label>Comment</label>
+                                    <textarea class="form-control" placeholder="Enter your message..." rows="6"></textarea>*@
+                                @Html.LabelFor(model => model.Comment, htmlAttributes: new { @class = "lbl-required" })
+                                @Html.TextAreaFor(model => model.Comment, 6, 100, new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Comment) })
+                                @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 align-self-center">
+                            <button class="btn">Submit</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        @*<div class="row">
+                <div class="col-12 map-sec mt-5">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d109740.86108853683!2d76.6934885929894!3d30.735210199119532!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390fed0be66ec96b%3A0xa5ff67f9527319fe!2sChandigarh!5e0!3m2!1sen!2sin!4v1591525521267!5m2!1sen!2sin" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                </div>
+            </div>*@
+    </div>
+</section>
+
+<style>
+    @@media only screen and (max-width: 1199px) {
+        form h2 {
+            margin-bottom: 18px !important;
+        }
+
+        form {
+            padding: 15px 40px 40px !important;
+        }
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
+
+    .page_heading {
+        background-image: url(../../Content/images/contact-us.jpg);
+        background-repeat: no-repeat;
+        width: 100%;
+        background-size: cover;
+        background-position: center center;
+        padding: 58px 0;
+        position: relative;
+        height: 312px;
+    }
+
+        .page_heading::after {
+            position: absolute;
+            display: block;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            content: '';
+            background: rgba(0,0,0,0.5);
+        }
+
+    form .table td,
+    form .table th {
+        vertical-align: middle;
+        font-size: 14px;
+        font-family: 'Nunito Sans', sans-serif;
+    }
+
+    form .table thead th {
+        border-bottom: 1px solid #dee2e6;
+        background: #f0f0f1;
+    }
+
+    .custom-control-label::before {
+        top: 0px;
+        background: #eceff3;
+        border-color: #eceff3;
+    }
+
+    .custom-control-label::after {
+        top: 0px;
+        border-radius: .25rem;
+    }
+
+    form label.custom-control-label {
+        color: #888;
+        font-size: 13px;
+    }
+
+    .custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
+        background-color: rgb(11, 157, 204);
+    }
+
+    table input:focus {
+        outline: 0;
+        box-shadow: none;
+    }
+
+    .copyright {
+        padding: 12px 0;
+        background: #fff;
+    }
+
+    .form-control:focus {
+        border-color: #ced4da;
+        box-shadow: none;
+    }
+
+    form {
+        background: #fff;
+        padding: 20px 22px;
+        box-shadow: 0px 3px 18px rgba(35, 38, 40, 0.3);
+        padding: 60px 90px 40px;
+    }
+
+        form h2 {
+            margin-bottom: 47px;
+            text-transform: uppercase;
+            line-height: 1.2;
+            font-size: 36px;
+            font-weight: 800;
+            font-family: 'Nunito Sans', sans-serif;
+        }
+
+        form h4 {
+            color: rgb(44, 129, 193);
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-family: 'Nunito Sans', sans-serif;
+        }
+
+        form p {
+            font-family: 'Nunito Sans', sans-serif;
+            font-size: 15px;
+            color: #7e7e7e;
+        }
+
+            form p a {
+                color: rgb(44, 129, 193);
+                text-decoration: underline;
+            }
+
+        form label {
+            font-family: 'Nunito Sans', sans-serif;
+            font-size: 15px;
+            color: #232628;
+            margin-bottom: 5px;
+        }
+
+        form .form-group {
+            margin-bottom: 30px;
+        }
+
+            form .form-group input,
+            form .form-group select {
+                height: 43px;
+                line-height: 43px;
+                padding: 0 15px;
+                font-weight: 400;
+                color: #888888;
+                border: 2px solid #eceff3;
+                font-size: 14px;
+                outline: none !important;
+                background-color: #eceff3;
+                font-family: 'Nunito Sans', sans-serif;
+                border-radius: 0;
+            }
+
+            form .form-group textarea {
+                padding: 10px 15px;
+                font-weight: 400;
+                color: #888888;
+                border: 2px solid #eceff3;
+                font-size: 14px;
+                outline: none !important;
+                background-color: #eceff3;
+                font-family: 'Nunito Sans', sans-serif;
+                max-height: 143px;
+                border-radius: 0;
+            }
+
+    .from-sec {
+        margin-top: -222px;
+        margin-bottom: 55px;
+    }
+
+    form .btn {
+        background: rgb(44, 129, 193);
+        color: #fff;
+        min-width: 115px;
+        font-family: 'Nunito Sans', sans-serif;
+        height: 42px;
+    }
+
+        form .btn:hover {
+            background: #343434;
+            color: #fff;
+        }
+
+    .map-sec iframe {
+        width: 100%;
+        height: 375px;
+    }
+
+    .lbl-required:after {
+        content: " *";
+        color: red;
+    }
+</style>

@@ -1,0 +1,129 @@
+﻿@model InstantTutors.Areas.Student.ViewModels.UpdateProfileViewModel
+
+@{
+    ViewBag.Title = Model.FirstName + " " + Model.LastName + " - Profile";
+    var __image = Model == null ? "icon2.png" : (Model.Gender == "Female" ? "female.png" : "male.png");
+}
+<style>
+    .img-profile {
+        border-radius: 50%;
+        max-width: 100%;
+        width: 114px;
+        height: 114px;
+        border: 1px solid #80808029;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div>
+                <br />
+                @Html.HiddenFor(model => model.UserId)
+                <section class="welcome-sec wow fadeInUp animated" data-wow-duration="2s" style="padding-top:8px">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h1>
+                                    @if (string.IsNullOrEmpty(Model.ProfileImage))
+                                    {
+                                        <img class="img-profile mt-1 mb-1" src="~/Content/images/@__image" alt="@__image" />
+                                    }
+                                    else
+                                    {
+                                        <img class="img-profile mt-1 mb-1" src="~/Content/images/student/@Model.ProfileImage" alt="@Model.ProfileImage" onerror="this.onerror=null;this.src='/Content/images/@__image';" />
+                                    }
+                                </h1>
+                                <h3 class="head_title"><b>@Model.FirstName&nbsp;@Model.LastName</b></h3>
+                                <hr />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <span style="color:grey">Title: </span> @Html.DisplayFor(model => model.Title)
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <span style="color:grey">Gender: </span> @Html.DisplayFor(model => model.Gender)
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <span style="color:grey">Email: </span> @Html.DisplayFor(model => model.Email)
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <span style="color:grey">First Name: </span> @Html.DisplayFor(model => model.FirstName)
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <span style="color:grey">Last Name: </span> @Html.DisplayFor(model => model.LastName)
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <span style="color:grey">Mobile: </span> @Html.DisplayFor(model => model.Mobile)
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <span style="color:grey">City/State: </span> @Html.DisplayFor(model => model.City)
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <span style="color:grey">Country: </span> @Html.DisplayFor(model => model.Country)
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <span style="color:grey">Zip: </span> @Html.DisplayFor(model => model.Zip)
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <span style="color:grey">Grade Level: </span> @Html.DisplayFor(model => model.StudentGrade)
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <span style="color:grey">School: </span> @Html.DisplayFor(model => model.StudentSchool)
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <span style="color:grey">Summary: </span> @Html.DisplayFor(model => model.Bio)
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <span style="color:grey">Hobbies: </span> @Html.DisplayFor(model => model.Hobbies)
+                        </div>
+                    </div>
+
+                    <div class="col-12 text-center">
+                        <div class="form-group">
+                            <br />
+                            <hr />
+                            <button class="btn btn-success">
+                                <a href="@Url.Action("Edit", "Profile", new { area = "Admin", id = Model.UserId })" style="color:white" hidefocus="hidefocus">
+                                    Update Your Profile
+                                </a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

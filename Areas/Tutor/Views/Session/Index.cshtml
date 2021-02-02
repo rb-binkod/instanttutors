@@ -1,0 +1,128 @@
+﻿@model InstantTutors.Areas.Tutor.ViewModels.TutorViewModel
+
+@{
+    ViewBag.Title = "Session Requests";
+    //Layout = "~/Areas/Tutor/Views/Shared/_TutorsLayout.cshtml";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <br />
+            <h3 class="head_title">Sessions</h3>
+            <small>ALL TIMINGS ARE IN EASTERN STANDARD TIME (EST) </small>
+        </div>
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>Session</th>
+                            <th></th>
+                            <th>Comm. Mode</th>
+                            <th>Student</th>
+                            <th>Grade</th>
+                            <th>School</th>
+                            <th>Created On</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var schedule in Model.SessionRequests)
+                        {
+                        <tr>
+                            <td><span>@schedule.Session.Title</span></td>
+                            <td><span style="cursor:pointer"><i class="fa fa-file-text" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="@schedule.Session.Description"></i></span></td>
+                            <td>@schedule.Session.CommunicationMethod</td>
+                            <td>
+                                @if (@schedule.StudentUser == null)
+                                {
+                                    <span>-</span>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("ViewProfile", "Profile", new { area = "Tutor", id = schedule.StudentUserId })" style="" hidefocus="hidefocus">
+                                        @schedule.StudentUser.FirstName&nbsp;@schedule.StudentUser.LastName <small>(@schedule.StudentUser.Gender)</small>
+                                    </a>
+                                }
+                            </td>
+                            <td>@schedule.StudentUser.StudentGrade</td>
+                            <td>@schedule.StudentUser.StudentSchool</td>
+                            <td>@schedule.Session.CreatedDate</td>
+                            <td>
+                                @if (schedule.Session.Status == InstantTutors.Models.Enums.SessionStatus.Approved)
+                                {
+                                <span id="s-@schedule.Session.Id" style="color:green">Approved</span>
+                                }
+                                else if (schedule.Session.Status == InstantTutors.Models.Enums.SessionStatus.Declined)
+                                {
+                                    <span id="s-@schedule.Session.Id" style="color:red">Declined</span>
+                                }
+                                else
+                                {
+                                    <span id="s-@schedule.Session.Id" style="color:orange">Pending</span>
+                                }
+                            </td>
+                            <td>
+                                @if (schedule.Session.ApproveDeclineBy == null)
+                                {
+                                    <small style="display: inline-flex;" id="by-@schedule.Session.Id">
+                                        <button class="btn btn-sm btn-success session-btn" onclick="UpdateStatus(@schedule.Session.Id,'0', 1, 'Approved');">Approve</button>&nbsp;
+                                        <button class="btn btn-sm btn-danger session-btn" onclick="UpdateStatus(@schedule.Session.Id,'0', 2, 'Declined');">Decline</button>
+                                    </small>
+                                }
+                                else
+                                {
+                                    <small style="display: inline-flex;" id="by-@schedule.Session.Id">
+                                        <button class="btn btn-sm btn-success session-btn" disabled style="cursor:not-allowed">Approve</button>&nbsp;
+                                        <button class="btn btn-sm btn-danger session-btn" disabled style="cursor:not-allowed">Decline</button>
+                                    </small>
+                                }
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Schedule", "Session", new { area = "Tutor", id = schedule.Session.Id })" hidefocus="hidefocus">
+                                    View Schedule Time
+                                </a>
+                            </td>
+                        </tr>
+                        }
+                        @if (Model.SessionRequests.Count == 0)
+                        {
+                            <tr><td colspan="10">NO RESULT FOUND.</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function UpdateStatus(SessionId, UserId, Status, StatusTxt) {
+        $('button.session-btn').prop('disabled', true);
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "/Tutor/Session/UpdateSessionStatus?SessionId=" + SessionId + "&UserId=" + UserId + "&Status=" + Status,
+            dataType: "json",
+            //data: JSON.stringify({ "query": $("#Query").val().trim() }),
+            async: true,
+            success: function (result) {
+                $('button.session-btn').prop('disabled', false);
+                console.log(JSON.parse(result));
+                $('#s-' + SessionId).css("color", StatusTxt == "Approved" ? "green" : "red");
+                $('#s-' + SessionId).text(StatusTxt);
+                $('#by-' + SessionId).hide();
+                //$('.data-list').show();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                // $("#divLoader").hide();
+                alert('Something went wrong. Please try again.');
+                return false;
+            }
+        });
+    }
+</script>
+

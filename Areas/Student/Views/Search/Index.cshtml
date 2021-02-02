@@ -1,0 +1,179 @@
+﻿@model InstantTutors.Models.ViewModels.SearchViewModel
+@{
+    ViewBag.Title = "Find Tutor";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <br />
+            <h3 class="head_title" style="margin-bottom:-10px;">Search Tutor</h3>
+        </div>
+        <div class="col-12">
+            @using (Html.BeginForm("Index", "Search", new { area = "Student" }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-horizontal">
+                    <br />
+                    @Html.HiddenFor(model => model.UserId)
+                    <div class="col-12 col-md-8 m-auto">
+                        <div class="row">
+                            <div class="col-12 col-sm-12">
+                                <div class="form-group">
+                                    @Html.EditorFor(model => model.SearchText, new { htmlAttributes = new { @class = "form-control search-txt", placeholder = Html.DisplayNameFor(n => n.SearchText) } })
+                                    <span class="search-icon">
+                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                    </span>
+                                    @Html.ValidationMessageFor(model => model.SearchText, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-3">
+                                <div class="form-group">
+                                    @Html.DropDownListFor(m => m.GradeLevel, new List<SelectListItem>
+                                    {
+                                        new SelectListItem{ Text="9th Grade", Value = "9th Grade" },
+                                        new SelectListItem{ Text="10th Grade", Value = "10th Grade" },
+                                        new SelectListItem{ Text="11th Grade", Value = "11th Grade" },
+                                        new SelectListItem{ Text="12th Grade", Value = "12th Grade" },
+                                     }, "By Grade Level -", new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-3">
+                                <div class="form-group">
+                                    @Html.DropDownListFor(m => m.Gender, new List<SelectListItem>
+                                    {
+                                        new SelectListItem{ Text="Male", Value = "Male" },
+                                        new SelectListItem{ Text="Female", Value = "Female" },
+                                        new SelectListItem{ Text="Other", Value = "Other" },
+                                     }, "By Gender -", new { @class = "form-control" })
+                                </div>
+                            </div>
+                            @*<div class="col-12 col-sm-6 col-md-3">
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(m => m.Gender, new List<SelectListItem>
+                                        {
+                                            new SelectListItem{ Text="Monday", Value = "Monday" },
+                                            new SelectListItem{ Text="Tuesday", Value = "Tuesday" },
+                                            new SelectListItem{ Text="Wednesday", Value = "Wednesday" },
+                                            new SelectListItem{ Text="Thursday", Value = "Thursday" },
+                                            new SelectListItem{ Text="Friday", Value = "Friday" },
+                                            new SelectListItem{ Text="Saturday", Value = "Saturday" }
+                                         }, "By Day Availability -", new { @class = "form-control" })
+                                    </div>
+                                </div>*@
+                            <div class="col-12 col-sm-12 col-md-6">
+                                <div class="form-group">
+                                    <button type="submit" style="width:55%" value="Search" class="btn btn-success" onclick="this.disabled=true;this.form.submit();">Search</button>
+                                    &nbsp;<input type="submit" style="width:40%" name="Reset" value="Reset" class="btn btn-danger" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@if (Model != null)
+{
+    if (Model.SearchTutorsList != null)
+    {
+        <div class="container">
+            <div class="row">
+                <br />
+                <div class="col-12 text-center mb-2">
+                    <hr /><h3 class="head_title">Search Results</h3><hr />
+                </div>
+                @foreach (var tutor in Model.SearchTutorsList)
+                {
+                    var __image = Model == null ? "online-icon-teach.png" : (tutor.User.Gender == "Female" ? "female.png" : "male.png");
+                    <div class="col-12 col-sm-3 text-center">
+                        <div class="form-group serach-box mb-4">
+                            @if (string.IsNullOrEmpty(tutor.User.ProfileImage))
+                            {
+                                <img class="img-profile mb-3" src="~/Content/images/@__image" alt="@__image" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/images/tutor/@tutor.User.ProfileImage" class="img-profile mb-3" onerror="this.onerror=null;this.src='/Content/images/@__image';" />
+                            }
+                            <span class="d-block t-about" title="@tutor.User.FirstName @tutor.User.LastName">
+                                <a href="@Url.Action("ViewProfile", "Profile", new { area = "Student", id = tutor.User.Id })" style="" hidefocus="hidefocus">
+                                    @tutor.User.FirstName @tutor.User.LastName <small>(@tutor.User.Gender)</small>
+                                </a>
+                            </span>
+                            <small class="t-about">
+                                <a href="mailto:@tutor.User.Email" title="@tutor.User.Email">
+                                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                                    @tutor.User.Email
+                                </a>
+                            </small>
+                            <small>
+                                <a href="tel:@tutor.User.PhoneNumber" title="Call @tutor.User.PhoneNumber">
+                                    <i class="fa fa-phone"></i>
+                                    @tutor.User.PhoneNumber
+                                </a>
+                            </small><br />
+                            <small class="t-about" title="">
+                                <a href="@Url.Action("newschedule", "session", new { area = "Student", id = tutor.User.Id })" style="color:green" hidefocus="hidefocus">
+                                    + Schedule A Session
+                                </a>
+                            </small>
+                        </div>
+                    </div>
+                }
+                @if (Model.SearchTutorsList.Count == 0)
+                {
+                    <div class="col-12 text-center">
+                        <div class="form-group">
+                            <h2 class="head_title" style="padding:14px">No Result Found.</h2>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+}
+
+<style>
+    .serach-box {
+        border: 1px solid #e5e5e5;
+        padding: 18px 10px;
+        border-radius: 4px;
+    }
+
+        .serach-box span {
+            color: #2c81c1;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+    small.t-about {
+        white-space: nowrap;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+    }
+
+    span.search-icon {
+        position: absolute;
+        right: 31px;
+        top: 4px;
+        font-size: 26px;
+        color: grey;
+    }
+
+    .search-txt {
+        height: 50px;
+        font-size: 20px;
+    }
+
+    .img-profile {
+        border-radius: 50%;
+        max-width: 100%;
+        width: 114px;
+        height: 114px;
+        border: 1px solid #80808029;
+    }
+</style>

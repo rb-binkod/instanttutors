@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" name="title" content="Instant Tutors - Wherever, Whenever">
+    <meta property="og:description" name="description" content="Free Online Tutoring">
+    <meta property="og:keywords" name="keywords" content="Instant Tutors, Wherever Whenever, Free Online Tutoring">
+    <title>@ViewBag.Title - Free Online Tutoring</title>
+    <link rel="icon" type="image/png" href="/favicon.ico">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;300;400;600;700;800;900&display=swap" rel="stylesheet">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-171082051-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-171082051-1');
+    </script>
+
+    <style>
+        .navbar-nav .nav-item a:hover {
+            color: #2c81c1;
+        }
+
+        .lbl, .lbl-required {
+            font-weight: bold;
+            color: grey;
+        }
+
+            .lbl-required:after {
+                content: " *";
+                color: red;
+            }
+
+        /* The radio/checkbox container */
+        .radio-check {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+            /* Hide the browser's default radio button */
+            .radio-check input {
+                position: absolute;
+                opacity: 0;
+                cursor: pointer;
+            }
+
+                .radio-check input.subject {
+                    height: 0;
+                    width: 0;
+                }
+
+        /* Create a custom radio button */
+        .checkmark, .checkmark-sub {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+        }
+
+        .checkmark {
+            border-radius: 50%;
+        }
+
+        /* On mouse-over, add a grey background color */
+        .radio-check:hover input ~ .checkmark,
+        .radio-check:hover input ~ .checkmark-sub {
+            background-color: #ccc;
+        }
+
+        /* When the radio button is checked, add a blue background */
+        .radio-check input:checked ~ .checkmark,
+        .radio-check input:checked ~ .checkmark-sub {
+            background-color: #2196F3;
+        }
+
+        /* Create the indicator (the dot/circle - hidden when not checked) */
+        .checkmark:after,
+        .checkmark-sub:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the indicator (dot/circle) when checked */
+        .radio-check input:checked ~ .checkmark:after,
+        .radio-check input:checked ~ .checkmark-sub:after {
+            display: block;
+        }
+
+        /* Style the indicator (dot/circle) */
+        .radio-check .checkmark:after {
+            top: 9px;
+            left: 9px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+        }
+
+        .radio-check .checkmark-sub:after {
+            left: 9px;
+            top: 5px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+        .body-content1 {
+            flex: 1;
+        }
+
+        .main-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        @Html.Partial("_StudentsHeader")
+        <div class="body-content1">
+            @RenderBody()
+        </div>
+
+        @Html.Partial("_StudentsFooter")
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script>
+        $(document).ready(function () {
+            $(".custom-file-input").on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            });
+        });
+    </script>
+</body>
+</html>

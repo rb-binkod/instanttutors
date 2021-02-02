@@ -1,0 +1,113 @@
+﻿@model InstantTutors.Areas.Admin.ViewModels.SQLViewModel
+
+@{
+    ViewBag.Title = "Sql Executor";
+}
+@Scripts.Render("~/bundles/jquery")
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <br />
+            <h4>SQL Executor</h4>
+            <hr />
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Query, htmlAttributes: new { @class = "control-label lbl-required" })
+                        @Html.TextAreaFor(model => model.Query, 4, 100, new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Query) })
+                        @Html.ValidationMessageFor(model => model.Query, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <input type="button" value="Execute" class="btn btn-success" onclick="executeSql();" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<section class="data-list">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-horizontal">
+                    <h4>
+                        Query Results &nbsp;
+                    </h4>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-sm-12">
+                            <div class="form-group">
+                                <div class="col-12">
+                                    <div class="table-responsive" >
+                                        <table id="sqlTables" class="table mb-4"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    var sqlDATA = null;
+    $('.data-list').hide();
+    $(document).ready(function () {
+        //$('#sqlTables').DataTable({
+        //    bSort: false,
+        //    aoColumns: [{ sWidth: "45%" }, { sWidth: "45%" }, { sWidth: "10%", bSearchable: false, bSortable: false }],
+        //    "scrollY": "200px",
+        //    "scrollCollapse": true,
+        //    "info": true,
+        //    "paging": true
+        //});
+    });
+    function executeSql() {
+        if ($('#Query').val() == null || $('#Query').val() == '') {
+            alert('Enter query');
+            return false;
+        }
+        sqlDATA = null;
+        $('.data-list').hide();
+        //$("#divLoader").show();
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "/Admin/Sql/Index?query=" + $("#Query").val().trim(),
+            dataType: "json",
+            //data: JSON.stringify({ "query": $("#Query").val().trim() }),
+            async: true,
+            success: function (result) {
+                //alert(result)
+                console.log(JSON.parse(result));
+                sqlDATA = JSON.parse(result);
+                $('#sqlTables').DataTable({
+                    bSort: false,
+                    aoColumns: [{ sWidth: "45%" }, { sWidth: "45%" }, { sWidth: "10%", bSearchable: false, bSortable: false }],
+                    "scrollY": "200px",
+                    "scrollCollapse": true,
+                    "info": true,
+                    "paging": true,
+                    data: sqlDATA
+                });
+                //$('#sqlTable').text(result);
+                $('.data-list').show();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                // $("#divLoader").hide();
+                alert('Please enter correct sql query');
+                return false;
+            }
+        });
+    }
+</script>
+

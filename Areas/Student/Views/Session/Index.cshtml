@@ -1,0 +1,66 @@
+﻿@model InstantTutors.Areas.Student.ViewModels.StudentViewModel
+@{
+    ViewBag.Title = "Sessions";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <br />
+            <h3 class="head_title">Sessions</h3>
+            <small>ALL TIMINGS ARE IN EASTERN STANDARD TIME (EST) &nbsp; <a href="@Url.Action("NewSchedule", "Session", new { area = "Student" })" hidefocus="hidefocus">Schedule A New Session</a></small>
+        </div>
+        <div class="col-12">
+            <div class="table-responsive" style="margin-top: 5px;">
+                <table class="table mb-4">
+                    <thead>
+                        <tr>
+                            <th>Session</th>
+                            <th>Description</th>
+                            <th>Communication Mode</th>
+                            <th>Tutor</th>
+                            <th>Created On</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var schedule in Model.SessionsVMList)
+                        {
+                        <tr>
+                            <td>@schedule.Session.Title</td>
+                            <td>@schedule.Session.Description</td>
+                            <td>@schedule.Session.CommunicationMethod</td>
+                            <td>
+                                @if (@schedule.TutorUser == null)
+                                {
+                                    <span>-</span>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("ViewProfile", "Profile", new { area = "Student", id = schedule.TutorUserId })" style="" hidefocus="hidefocus">
+                                        @schedule.TutorUser.FirstName&nbsp;@schedule.TutorUser.LastName <small>(@schedule.TutorUser.Gender)</small>
+                                    </a>
+                                }
+                            </td>
+                            <td>@schedule.Session.CreatedDate</td>
+                            <td>
+                                <span style="color:orange">Pending</span>
+                            </td>
+                            <td>
+                                @*<a href="@Url.Action("Schedule", "Session", new { area = "Student", id = schedule.Session.Id })" hidefocus="hidefocus">
+                                    View Schedule Time
+                                </a>*@
+                            </td>
+                        </tr>
+                        }
+                        @if (Model.SessionsList.Count == 0)
+                        {
+                            <tr><td colspan="6" class="text-center">NO RESULT FOUND.</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

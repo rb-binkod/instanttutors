@@ -1,0 +1,167 @@
+﻿@model InstantTutors.Areas.Student.ViewModels.AdminSessionViewModel
+
+@{
+    ViewBag.Title = Model.Id > 0 ? "Edit Schedule" : "Schedule A Session";
+    Model.TutorsList = Model.TutorsList == null ? ViewBag.TutorsList : Model.TutorsList;
+    Model.StudentsList = Model.StudentsList == null ? ViewBag.StudentsList : Model.StudentsList;
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            @using (Html.BeginForm("Schedule", "Session", new { area = "Admin" }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-horizontal">
+                    <br />
+                    @Html.Raw(@ViewBag.success)
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.Id)
+                    <h4>@ViewBag.Title</h4>
+                    <p><small>All Tutoring Sessions will be conducted by extremely qualified high school students or professionals.</small></p>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-sm-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label lbl-required col-12 px-0" })
+                                <div class="col-12 px-0">
+                                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Title) } })
+                                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.StudentUserId, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.DropDownListFor(m => m.StudentUserId, Model.StudentsList, "Select Student -", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.StudentUserId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.TutorUserId, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.DropDownListFor(m => m.TutorUserId, Model.TutorsList, "Select Tutor -", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.TutorUserId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-5">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CommunicationMethod, htmlAttributes: new { @class = "control-label lbl-required col-12 px-0" })
+                                <div class="col-12 px-0">
+                                    <label class="radio-check">
+                                        Text
+                                        @Html.RadioButtonFor(m => m.CommunicationMethod, "Text", new { @class = "grade form-control" })
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="radio-check">
+                                        Email
+                                        @Html.RadioButtonFor(m => m.CommunicationMethod, "Email", new { @class = "grade form-control" })
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="radio-check">
+                                        Call
+                                        @Html.RadioButtonFor(m => m.CommunicationMethod, "Call", new { @class = "grade form-control" })
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="radio-check">
+                                        All of the above
+                                        @Html.RadioButtonFor(m => m.CommunicationMethod, "All of the above", new { @class = "grade form-control" })
+                                        <span class="checkmark"></span>
+                                    </label>
+
+                                    @Html.ValidationMessageFor(model => model.CommunicationMethod, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-7">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label lbl-required col-12 px-0" })
+                                <div class="col-12 px-0">
+                                    @Html.TextAreaFor(model => model.Description, 5, 100, new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Description) })
+                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12">
+                            <div class="form-group">
+                                @Html.Label("Please choose 2+ Days/Times that you are available. ALL TIMES ARE IN EASTERN STANDARD TIME (EST).", "Please choose 2+ Days/Times that you are available. ALL TIMES ARE IN EASTERN STANDARD TIME (EST).", htmlAttributes: new { @class = "control-label lbl-required col-12 px-0" })
+                                <div class="col-12 px-0">
+                                    <div class="table-responsive">
+                                        <table class="table mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Day/Date</th>
+                                                    <th>10:00 A.M.</th>
+                                                    <th>11:00 A.M.</th>
+                                                    <th>12:00 A.M.</th>
+                                                    <th>01:00 P.M.</th>
+                                                    <th>02:00 P.M.</th>
+                                                    <th>03:00 P.M.</th>
+                                                    <th>04:00 P.M.</th>
+                                                    <th>05:00 P.M.</th>
+                                                    <th>06:00 P.M.</th>
+                                                    <th>07:00 P.M.</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (int i = 0; i < Model.SessionSchedules.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td>@Model.SessionSchedules[i].Day.ToString()</td>
+                                                        @for (int j = 0; j < Model.SessionSchedules[i].Timing.Count; j++)
+                                                        {
+                                                            <td>
+                                                                <div class="custom-control custom-checkbox">
+                                                                    @Html.CheckBoxFor(m => Model.SessionSchedules[i].Timing[j].Selected, new { @id = "customCheck-" + i + "-" + j, @class = "custom-control-input form-control" })
+                                                                    @Html.HiddenFor(m => @Model.SessionSchedules[i].Timing[j].Time)
+                                                                    @Html.HiddenFor(m => @Model.SessionSchedules[i].Timing[j].AvailabilityTime)
+                                                                    @Html.HiddenFor(m => @Model.SessionSchedules[i].Id)
+                                                                    @Html.HiddenFor(m => @Model.SessionSchedules[i].UserId)
+                                                                    @Html.HiddenFor(m => @Model.SessionSchedules[i].Day)
+                                                                    @Html.HiddenFor(m => @Model.SessionSchedules[i].SessionId)
+                                                                    <label class="custom-control-label" for="customCheck-@i-@j"></label>
+                                                                </div>
+                                                            </td>
+                                                        }
+                                                    </tr>
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Concerns, htmlAttributes: new { @class = "control-label lbl col-12 px-0" })
+                                <div class="col-12 px-0">
+                                    @Html.TextAreaFor(model => model.Concerns, 3, 100, new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Concerns) })
+                                    @Html.ValidationMessageFor(model => model.Concerns, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="col-12">
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10 px-0">
+                                    <input type="submit" value="@ViewBag.Title" class="btn btn-success btn-lg" onclick="this.disabled=true;this.form.submit();" />&nbsp;&nbsp;
+                                    <a href="@Url.Action("Index", "Session", new { area = "Admin" })" hidefocus="hidefocus">
+                                        << Back To Sessions
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+<style>
+    @@media only screen and (max-width: 767px) {
+        h3.head_title {
+            font-size: 20px;
+        }
+    }

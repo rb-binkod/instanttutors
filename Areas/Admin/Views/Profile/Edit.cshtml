@@ -1,0 +1,180 @@
+﻿@model InstantTutors.Areas.Student.ViewModels.UpdateProfileViewModel
+
+@{
+    ViewBag.Title = Model.FirstName + " " + Model.LastName + " - Update Profile";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            @using (Html.BeginForm("Edit", "Profile", new { area = "Admin" }, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <br />
+                    @Html.Raw(@ViewBag.success)
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.UserId)
+                    <h4>Update Profile</h4>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.DropDownListFor(m => m.Title, new List<SelectListItem>
+                                {
+                                    new SelectListItem{ Text="Mr", Value = "Mr", Selected = ("Mr" == Model.Title) },
+                                    new SelectListItem{ Text="Ms", Value = "Ms", Selected = ("Ms" == Model.Title) },
+                                    new SelectListItem{ Text="Mrs", Value = "Mrs", Selected = ("Mrs" == Model.Title) },
+                                    new SelectListItem{ Text="Other", Value = "Other", Selected = ("Other" == Model.Title) },
+                                 }, "Select Title -", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.DropDownListFor(m => m.Gender, new List<SelectListItem>
+                                {
+                                    new SelectListItem{ Text="Male", Value = "Male" },
+                                    new SelectListItem{ Text="Female", Value = "Female" },
+                                    new SelectListItem{ Text="Other", Value = "Other" },
+                                 }, "Select Gender -", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Mobile, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Mobile) } })
+                                @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.FirstName) } })
+                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.LastName) } })
+                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Email), @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ProfileImage, htmlAttributes: new { @class = "control-label lbl" })
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="customFile" name="file" accept="image/*">
+                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.City) } })
+                                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.EditorFor(model => model.Country, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Country) } })
+                                @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Zip, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Zip) } })
+                                @Html.ValidationMessageFor(model => model.Zip, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.StudentGrade, htmlAttributes: new { @class = "control-label lbl-required" })
+                                <div class="col-12 t-grade">
+                                    <label class="radio-check col-sm-2">
+                                        9th Grade
+                                        @Html.RadioButtonFor(m => m.StudentGrade, "9th Grade", new { @class = "grade form-control" })
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="radio-check col-sm-2">
+                                        10th Grade
+                                        @Html.RadioButtonFor(m => m.StudentGrade, "10th Grade", new { @class = "grade form-control" })
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="radio-check col-sm-2">
+                                        11th Grade
+                                        @Html.RadioButtonFor(m => m.StudentGrade, "11th Grade", new { @class = "grade form-control" })
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="radio-check col-sm-2">
+                                        12th Grade
+                                        @Html.RadioButtonFor(m => m.StudentGrade, "12th Grade", new { @class = "grade form-control" })
+                                        <span class="checkmark"></span>
+                                    </label>
+
+                                    @Html.ValidationMessageFor(model => model.StudentGrade, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.StudentSchool, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.TextAreaFor(model => model.StudentSchool, 2, 100, new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.StudentSchool) })
+                                @Html.ValidationMessageFor(model => model.StudentSchool, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Hobbies, htmlAttributes: new { @class = "control-label lbl" })
+                                @Html.TextAreaFor(model => model.Hobbies, 2, 100, new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Hobbies) })
+                                @Html.ValidationMessageFor(model => model.Hobbies, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Bio, htmlAttributes: new { @class = "control-label lbl" })
+                                @Html.TextAreaFor(model => model.Bio, 2, 100, new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Bio) })
+                                @Html.ValidationMessageFor(model => model.Bio, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-12">
+                            <div class="form-group">
+                                <hr />
+                                <input type="submit" value="Update Profile" class="btn btn-success" onclick="this.disabled=true;this.form.submit();" />
+                                &nbsp;<a class="" href="@Url.Action("Index", "Profile", new { area = "Admin" })">Back to Profile</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<style>
+    .t-grade .radio-check {
+        display: inline-flex !important;
+    }
+</style>
+@Scripts.Render("~/bundles/jquery")
+<script>
+    $("document").ready(function () {
+        $('select#Title').val('@Model.Title');
+        //$("select[name^='Title'] option[value='@Model.Title']").attr("selected", "selected");
+    });
+</script>

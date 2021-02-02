@@ -1,0 +1,127 @@
+﻿@model InstantTutors.Areas.Student.ViewModels.StudentViewModel
+@{
+    ViewBag.Title = "Sessions";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <br />
+            <h3 class="head_title">Sessions</h3>
+            <small>ALL TIMINGS ARE IN EASTERN STANDARD TIME (EST) &nbsp; <a href="@Url.Action("NewSchedule", "Session", new { area = "Admin" })" hidefocus="hidefocus"> + Schedule A New Session</a></small>
+        </div>
+        <div class="col-12">
+            <div class="table-responsive" style="margin-top: 5px;">
+                <table class="table mb-4">
+                    <thead>
+                        <tr>
+                            <th>Session</th>
+                            <th></th>
+                            <th>Communication Mode</th>
+                            <th>Student</th>
+                            <th>Tutor</th>
+                            <th>Created On</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var schedule in Model.SessionsVMList)
+                        {
+                            <tr style="font-size: 90%;">
+                                <td>@schedule.Session.Title</td>
+                                <td><span style="cursor:pointer"><i class="fa fa-file-text" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="@schedule.Session.Description"></i></span></td>
+                                <td>@schedule.Session.CommunicationMethod</td>
+                                <td>
+                                    @if (@schedule.StudentUser == null)
+                                    {
+                                        <span>-</span>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("ViewProfile", "Profile", new { area = "Admin", id = schedule.StudentUserId })" style="" hidefocus="hidefocus">
+                                            @schedule.StudentUser.FirstName&nbsp;@schedule.StudentUser.LastName <small>(@schedule.StudentUser.Gender)</small>
+                                        </a>
+                                    }
+                                </td>
+                                <td>
+                                    @if (@schedule.TutorUser == null)
+                                    {
+                                        <span>-</span>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("ViewProfile", "Profile", new { area = "Admin", id = schedule.TutorUserId })" style="" hidefocus="hidefocus">
+                                            @schedule.TutorUser.FirstName&nbsp;@schedule.TutorUser.LastName <small>(@schedule.TutorUser.Gender)</small>
+                                        </a>
+                                    }
+                                </td>
+                                <td>@schedule.Session.CreatedDate</td>
+                                <td>
+                                    @if (schedule.Session.Status == InstantTutors.Models.Enums.SessionStatus.Approved)
+                                    {
+                                        <span id="s-@schedule.Session.Id" style="color:green">Approved</span>
+                                    }
+                                    else if (schedule.Session.Status == InstantTutors.Models.Enums.SessionStatus.Declined)
+                                    {
+                                        <span id="s-@schedule.Session.Id" style="color:red">Declined</span>
+                                    }
+                                    else
+                                    {
+                                        <span id="s-@schedule.Session.Id" style="color:orange">Pending</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (schedule.Session.ApproveDeclineBy == null)
+                                    {
+
+                                        <small style="display: inline-flex;" id="by-@schedule.Session.Id">
+                                            @*<button class="btn btn-sm btn-success session-btn" onclick="UpdateStatus(@schedule.Session.Id,'0', 1, 'Approved');">Approve</button>&nbsp;
+                                                <button class="btn btn-sm btn-danger session-btn" onclick="UpdateStatus(@schedule.Session.Id,'0', 2, 'Declined');">Decline</button>*@
+
+                                            @using (Html.BeginForm("UpdateSessionStatus", "Session", new { area = "Admin", id = schedule.Session.Id, name = "Approve" }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                                            {
+                                                <button type="submit" name="UpdatedStatus" value="Approve" class="btn btn-sm btn-success session-btn" onclick="this.disabled=true;this.form.submit();" id="Approve-@schedule.Session.Id">Approve</button>
+                                            }&nbsp;
+                                            @using (Html.BeginForm("UpdateSessionStatus", "Session", new { area = "Admin", id = schedule.Session.Id, name = "Decline" }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                                            {
+                                                <button type="submit" name="UpdatedStatus" value="Decline" class="btn btn-sm btn-danger session-btn" onclick="this.disabled=true;this.form.submit();" id="Decline-@schedule.Session.Id">Decline</button>
+                                            }&nbsp;
+                                            @using (Html.BeginForm("UpdateSessionStatus", "Session", new { area = "Admin", id = schedule.Session.Id, name = "Delete" }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                                            {
+                                                <button type="submit" name="UpdatedStatus" value="Delete" class="btn btn-sm btn-danger session-btn" onclick="this.disabled=true;this.form.submit();" id="Delete-@schedule.Session.Id">Remove</button>
+                                            }
+
+                                        </small>
+                                    }
+                                    else
+                                    {
+                                        <small style="display: inline-flex;" id="by-@schedule.Session.Id">
+                                            <button class="btn btn-sm btn-success session-btn" disabled style="cursor:not-allowed"> Approve </button> &nbsp;
+                                            <button class="btn btn-sm btn-danger session-btn" disabled style="cursor:not-allowed">
+                                                Decline
+                                            </button>&nbsp;
+                                            <button class="btn btn-sm btn-danger session-btn" disabled style="cursor:not-allowed">
+                                                Delete
+                                            </button>
+                                        </small>
+                                    }
+                                </td>
+                                <td>
+                                    @*<a href="@Url.Action("Schedule", "Session", new { area = "Student", id = schedule.Session.Id })" hidefocus="hidefocus">
+                                            View Schedule Time
+                                        </a>*@
+                                </td>
+                            </tr>
+                        }
+                        @if (Model.SessionsList.Count == 0)
+                        {
+                            <tr><td colspan="6" class="text-center">NO RESULT FOUND.</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

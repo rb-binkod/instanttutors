@@ -1,0 +1,263 @@
+﻿@model InstantTutors.Areas.Tutor.ViewModels.TutorViewModel
+
+@{
+    ViewBag.Title = "Dashboard - " + Model.User.FirstName + " " + Model.User.LastName;
+    var __image = Model == null ? "icon2.png" : (Model.User.Gender == "Female" ? "female.png" : "male.png");
+}
+<style>
+    .img-profile {
+        border-radius: 50%;
+        max-width: 100%;
+        width: 114px;
+        height: 114px;
+        border: 1px solid #80808029;
+    }
+</style>
+<section class="welcome-sec wow fadeInUp animated" data-wow-duration="2s" style="padding-top:8px">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1>
+                    @if (string.IsNullOrEmpty(Model.User.ProfileImage))
+                    {
+                        <img class="img-profile mt-1 mb-1" src="~/Content/images/@__image" alt="@__image" />
+                    }
+                    else
+                    {
+                        <img class="img-profile mt-1 mb-1" src="~/Content/images/tutor/@Model.User.ProfileImage" alt="@Model.User.ProfileImage" onerror="this.onerror=null;this.src='~/Content/images/@__image';" />
+                    }
+                </h1>
+                <h3 class="head_title">Welcome Tutor, <b>@Model.User.FirstName&nbsp;@Model.User.LastName</b></h3>
+                <hr />
+            </div>
+        </div>
+    </div>
+</section>
+<section class="dash-profile">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4>
+                    Profile &nbsp;
+                    <small style="font-size: 50%;">
+                        <a href="@Url.Action("Edit", "Profile", new { area = "Tutor", id = Model.UserId })" hidefocus="hidefocus">
+                            Click Here To Update Profile
+                        </a>
+                    </small>
+                </h4>
+                <hr />
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="form-group">
+                    <span style="color:grey">Full Name: </span> @Model.User.Title&nbsp;@Model.User.FirstName&nbsp;@Model.User.LastName
+                </div>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="form-group">
+                    <span style="color:grey">Email: </span> @Model.User.Email
+                </div>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="form-group">
+                    <span style="color:grey">Name of School: </span> @Model.NameOfSchool
+                </div>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="form-group">
+                    <span style="color:grey">Grade Level: </span> @Model.GradeLevel
+                </div>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="form-group">
+                    <span style="color:grey">Previous Subjects: </span> @Model.PreviousSubjects
+                </div>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="form-group">
+                    <span style="color:grey">Experience: </span> @Model.Experience
+                </div>
+            </div>
+            <div class="col-12 col-sm-12">
+                <div class="form-group">
+                    <small>
+                        <a href="@Url.Action("Index", "Profile", new { area = "Tutor", id = Model.UserId })" hidefocus="hidefocus">
+                            View Full Profile
+                        </a>
+                    </small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<section class="dash-session">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-horizontal">
+                    <br />
+                    <h4>
+                        Tuition Availability Information &nbsp;
+                        <small style="font-size: 50%;">
+                            <a href="@Url.Action("Availability", "Session", new { area = "Tutor", id = Model.UserId })" hidefocus="hidefocus">
+                                Click Here To Update Availability
+                            </a>
+                        </small>
+                    </h4>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-sm-12">
+                            <div class="form-group">
+                                @Html.Label("ALL TIMINGS ARE IN EASTERN STANDARD TIME (EST)", "ALL TIMINGS ARE IN EASTERN STANDARD TIME (EST)", htmlAttributes: new { @class = "control-label lbl-required col-12" })
+                                <div class="col-12">
+                                    <div class="table-responsive">
+                                        <table class="table mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Day/Date</th>
+                                                    <th>10:00 A.M.</th>
+                                                    <th>11:00 A.M.</th>
+                                                    <th>12:00 A.M.</th>
+                                                    <th>01:00 P.M.</th>
+                                                    <th>02:00 P.M.</th>
+                                                    <th>03:00 P.M.</th>
+                                                    <th>04:00 P.M.</th>
+                                                    <th>05:00 P.M.</th>
+                                                    <th>06:00 P.M.</th>
+                                                    <th>07:00 P.M.</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (int i = 0; i < Model.TutorAvailability.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td>@Model.TutorAvailability[i].Day.ToString()</td>
+                                                        @for (int j = 0; j < Model.TutorAvailability[i].Timing.Count; j++)
+                                                        {
+                                                            <td>
+                                                                <div class="custom-control custom-checkbox">
+                                                                    @Html.CheckBoxFor(m => Model.TutorAvailability[i].Timing[j].Selected, new { @id = "customCheck-" + i + "-" + j, @class = "custom-control-input form-control", @disabled = "disabled" })
+                                                                    @Html.HiddenFor(m => @Model.TutorAvailability[i].Timing[j].Time)
+                                                                    @Html.HiddenFor(m => @Model.TutorAvailability[i].Timing[j].AvailabilityTime)
+                                                                    @Html.HiddenFor(m => @Model.TutorAvailability[i].Id)
+                                                                    @Html.HiddenFor(m => @Model.TutorAvailability[i].Day)
+                                                                    <label class="custom-control-label" for="customCheck-@i-@j"></label>
+                                                                </div>
+                                                            </td>
+                                                        }
+                                                    </tr>
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<section class="dash-session-req">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-horizontal">
+                    <h4>
+                        Session Requests &nbsp;
+                        <small style="font-size: 50%;"> <a href="@Url.Action("Index", "Session", new { area = "Tutor" })" hidefocus="hidefocus">View All Requests</a></small>
+                    </h4>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-sm-12">
+                            <div class="form-group">
+                                @Html.Label("ALL TIMINGS ARE IN EASTERN STANDARD TIME (EST)", "ALL TIMINGS ARE IN EASTERN STANDARD TIME (EST)", htmlAttributes: new { @class = "control-label lbl col-12" })
+                                <div class="col-12">
+                                    <div class="table-responsive">
+                                        <table class="table mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Session</th>
+                                                    <th></th>
+                                                    <th>Comm. Mode</th>
+                                                    <th>Student</th>
+                                                    <th>Grade</th>
+                                                    <th>School</th>
+                                                    <th>Created On</th>
+                                                    <th>Status</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var schedule in Model.SessionRequests)
+                                                {
+                                                    <tr>
+                                                        <td>@schedule.Session.Title</td>
+                                                        <td><span style="cursor:pointer"><i class="fa fa-file-text" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="@schedule.Session.Description"></i></span></td>
+                                                        <td>@schedule.Session.CommunicationMethod</td>
+                                                        <td>
+                                                            @if (@schedule.StudentUser == null)
+                                                            {
+                                                                <span>-</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <a href="@Url.Action("ViewProfile", "Profile", new { area = "Tutor", id = schedule.StudentUserId })" style="" hidefocus="hidefocus">
+                                                                    @schedule.StudentUser.FirstName&nbsp;@schedule.StudentUser.LastName <small>(@schedule.StudentUser.Gender)</small>
+                                                                </a>
+                                                            }
+                                                        </td>
+                                                        <td>@schedule.StudentUser.StudentGrade</td>
+                                                        <td>@schedule.StudentUser.StudentSchool</td>
+                                                        <td>@schedule.Session.CreatedDate</td>
+                                                        <td>
+                                                            @if (@schedule.Session.Status == InstantTutors.Models.Enums.SessionStatus.Approved)
+                                                            {
+                                                                <span style="color:green">Approved</span>
+                                                            }
+                                                            else if (@schedule.Session.Status == InstantTutors.Models.Enums.SessionStatus.Declined)
+                                                            {
+                                                                <span style="color:red">Declined</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span style="color:orange">Pending</span>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @*<a href="@Url.Action("Schedule", "Session", new { area = "Tutor", id = schedule.Session.Id })" hidefocus="hidefocus">
+                                                                    View Schedule Time
+                                                                </a>*@
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                @if (Model.SessionRequests.Count == 0)
+                                                {
+                                                    <tr><td colspan="9">NO RESULT FOUND.</td></tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <small class="col-12">
+                                    <a href="@Url.Action("Index", "Session", new { area = "Tutor" })" hidefocus="hidefocus">
+                                        View All Session Requests
+                                    </a>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>

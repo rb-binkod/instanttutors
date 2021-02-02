@@ -1,0 +1,251 @@
+﻿@model InstantTutors.Areas.Admin.ViewModels.AdminViewModel
+
+@{
+    ViewBag.Title = "Dashboard " + Model.User.FirstName + " " + Model.User.LastName;
+    var __image = Model == null ? "icon2.png" : (Model.User.Gender == "Female" ? "female.png" : "male.png");
+}
+<style>
+    .img-profile {
+        border-radius: 50%;
+        max-width: 100%;
+        width: 114px;
+        height: 114px;
+        border: 1px solid #80808029;
+    }
+</style>
+<section class="welcome-sec wow fadeInUp animated" data-wow-duration="2s" style="padding-top:8px">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1>
+                    @if (string.IsNullOrEmpty(Model.User.ProfileImage))
+                    {
+                        <img class="img-profile mt-1 mb-1" src="~/Content/images/@__image" alt="@__image" />
+                    }
+                    else
+                    {
+                        <img class="img-profile mt-1 mb-1" src="~/Content/images/tutor/@Model.User.ProfileImage" alt="@Model.User.ProfileImage" onerror="this.onerror=null;this.src='~/Content/images/@__image';" />
+                    }
+                </h1>
+                <h3 class="head_title">Welcome Admin, <b>@Model.User.UserName</b></h3>
+                <hr />
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="tutor-list">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-horizontal">
+                    <h4>
+                        Tutors List &nbsp;
+                        <small class="col-12" style="font-size: 50%;">
+                            <a href="@Url.Action("NewSchedule", "Session", new { area = "Admin" })" hidefocus="hidefocus"> + Schedule A New Session</a>
+                        </small>
+                    </h4>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-sm-12">
+                            <div class="form-group">
+                                <div class="col-12">
+                                    <div class="table-responsive">
+                                        <table class="table mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Phone</th>
+                                                    <th>Grade </th>
+                                                    <th>School </th>
+                                                    <th>Previous Subjects </th>
+                                                    <th>Address</th>
+                                                    <th>Status</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var tutor in Model.TutorsList)
+                                                {
+                                                    <tr style="font-size: 90%;">
+                                                        <td>
+                                                            <a href="@Url.Action("ViewProfile", "Profile", new { area = "Admin", id = tutor.User.Id })" style="" hidefocus="hidefocus" title="View Profile">
+                                                                @tutor.User.FirstName&nbsp;@tutor.User.LastName
+                                                            </a>
+                                                        </td>
+                                                        <td>@tutor.User.Email</td>
+                                                        <td>@tutor.User.PhoneNumber</td>
+                                                        <td>@tutor.GradeLevel</td>
+                                                        <td>@tutor.NameOfSchool</td>
+                                                        <td>@tutor.PreviousSubjects</td>
+                                                        <td>@tutor.User.Address @tutor.User.City @tutor.User.Zip</td>
+                                                        <td>
+                                                            @if (tutor.User.EmailConfirmed)
+                                                            {
+                                                                if (tutor.User.HasDisabled)
+                                                                {
+                                                                    <span style="color:red">Disabled</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span style="color:green">Active</span>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <span style="color:red">Email Not Confirmed</span>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @*<a href="#" hidefocus="hidefocus">
+                                                                View User
+                                                            </a>*@
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                @if (Model.TutorsList.Count == 0)
+                                                {
+                                                    <tr><td colspan="8">NO RESULT FOUND.</td></tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <b>
+                                    <small class="col-12">
+                                        <a href="@Url.Action("Tutors", "User", new { area = "Admin" })" style="color:green !important" hidefocus="hidefocus">
+                                            View All Tutors >>
+                                        </a>
+                                    </small>
+                                </b>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="student-list">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-horizontal">
+                    <h4>
+                        Students List &nbsp;
+                        <small class="col-12" style="font-size: 50%;">
+                            <a href="@Url.Action("NewSchedule", "Session", new { area = "Admin" })" hidefocus="hidefocus"> + Schedule A New Session</a>
+                            </a>
+                        </small>
+                    </h4>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-sm-12">
+                            <div class="form-group">
+                                <div class="col-12">
+                                    <div class="table-responsive">
+                                        <table class="table mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Phone</th>
+                                                    <th>Grade </th>
+                                                    <th>School </th>
+                                                    <th>Address</th>
+                                                    <th>Status</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var student in Model.StudentsList)
+                                                {
+                                                    <tr style="font-size: 90%;">
+                                                        <td>
+                                                            <a href="@Url.Action("ViewProfile", "Profile", new { area = "Admin", id = student.User.Id })" style="" hidefocus="hidefocus" title="View Profile">
+                                                                @student.User.FirstName&nbsp;@student.User.LastName
+                                                            </a>
+                                                        </td>
+                                                        <td>@student.User.Email</td>
+                                                        <td>@student.User.PhoneNumber</td>
+                                                        <td>@student.User.StudentGrade</td>
+                                                        <td>@student.User.StudentSchool</td>
+                                                        <td>@student.User.Address @student.User.City @student.User.Zip</td>
+                                                        <td>
+                                                            @if (student.User.EmailConfirmed)
+                                                            {
+                                                                if (student.User.HasDisabled)
+                                                                {
+                                                                    <span style="color:red">Disabled</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span style="color:green">Active</span>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <span style="color:red">Email Not Confirmed</span>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @*<a href="#" hidefocus="hidefocus">
+                                                                View User
+                                                            </a>*@
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                @if (Model.StudentsList.Count == 0)
+                                                {
+                                                    <tr><td colspan="8">NO RESULT FOUND.</td></tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <b>
+                                    <small class="col-12">
+                                        <a href="@Url.Action("Students", "User", new { area = "Admin" })" style="color:green !important" hidefocus="hidefocus">
+                                            View All Students >>
+                                        </a>
+                                    </small>
+                                </b>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="sql-editor">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4>
+                    SQL Editor &nbsp;
+                    <small style="font-size: 50%;">
+                        <a href="@Url.Action("Index", "Sql", new { area = "Admin" })" hidefocus="hidefocus">
+                            SQL Query Executor
+                        </a>
+                    </small>
+                </h4>
+                <hr />
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="form-group">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

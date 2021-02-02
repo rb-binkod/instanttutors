@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/InstantTutors/config
+/.vs/InstantTutors/v16/Server/sqlite3
+/bin
+/obj/Debug
+/packages
+/.vs/InstantTutors/v16
+/_bin_deployableAssemblies
+/obj/Release
+/Content/images

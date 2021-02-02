@@ -1,0 +1,238 @@
+﻿@model InstantTutors.Models.ViewModels.StudentRegisterViewModel
+
+@{
+    ViewBag.Title = "Register as Student";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+
+            @using (Html.BeginForm("Student", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <br />
+                    @Html.Raw(@ViewBag.success)
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <h4>Register as a Student</h4>
+                    <p><small>We made sure to choose some of the most skilled high schoolers to guide you through your educational journey. Whether you want to refresh your memory on a complex topic, or simply need help with homework, Instant tutors is here for you- wherever, whenever. </small></p>
+                    <hr />
+
+                    <div class="row">
+
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.DropDownListFor(m => m.Title, new List<SelectListItem>
+                                    {
+                                    new SelectListItem{ Text="Mr", Value = "Mr" },
+                                    new SelectListItem{ Text="Ms", Value = "Ms" },
+                                    new SelectListItem{ Text="Mrs", Value = "Mrs" },
+                                    new SelectListItem{ Text="Other", Value = "Other" },
+                                    }, "Select Title -", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.DropDownListFor(m => m.Gender, new List<SelectListItem>
+                                    {
+                                    new SelectListItem{ Text="Male", Value = "Male" },
+                                    new SelectListItem{ Text="Female", Value = "Female" },
+                                    new SelectListItem{ Text="Other", Value = "Other" },
+                                    }, "Select Gender -", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="form-group">
+                                @*@Html.LabelFor(model => model.ProfileImage, htmlAttributes: new { @class = "control-label lbl" })
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="customFile" name="file" accept="image/*">
+                                        <label class="custom-file-label" for="customFile">Choose file</label>
+                                    </div>*@
+                                @Html.LabelFor(model => model.File, htmlAttributes: new { @class = "control-label lbl" })
+                                <div class="custom-file">
+                                    <input type="file" name="@Html.NameFor(model => model.File)" id="@Html.IdFor(model => model.File)" class="custom-file-input" accept="image/*" />
+                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Email) } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.FirstName) } })
+                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.LastName) } })
+                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Password) } })
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.ConfirmPassword) } })
+                                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Mobile, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Mobile) } })
+                                @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.City) } })
+                                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.EditorFor(model => model.Country, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Country) } })
+                                @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Zip, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Zip) } })
+                                @Html.ValidationMessageFor(model => model.Zip, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.StudentGrade, htmlAttributes: new { @class = "control-label lbl-required" })
+                                <div class="col-12 t-grade p-0">
+                                    <label class="radio-check col-sm-5 col-md-3 col-lg-2">
+                                        K
+                                        @Html.RadioButtonFor(m => m.StudentGrade, "K", new { @class = "grade form-control" })
+                                        <span class="checkmark"></span>
+                                    </label>
+
+                                    <label class="radio-check col-sm-5 col-md-3 col-lg-2">
+                                        1st
+                                        @Html.RadioButtonFor(m => m.StudentGrade, "1st", new { @class = "grade form-control" })
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="radio-check col-sm-5 col-md-3 col-lg-2">
+                                        2nd
+                                        @Html.RadioButtonFor(m => m.StudentGrade, "2nd", new { @class = "grade form-control" })
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="radio-check col-sm-5 col-md-3 col-lg-2">
+                                        3rd
+                                        @Html.RadioButtonFor(m => m.StudentGrade, "3rd", new { @class = "grade form-control" })
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="radio-check col-sm-5 col-md-3 col-lg-2">
+                                        4th
+                                        @Html.RadioButtonFor(m => m.StudentGrade, "4th", new { @class = "grade form-control" })
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="radio-check col-sm-5 col-md-3 col-lg-2">
+                                        5th
+                                        @Html.RadioButtonFor(m => m.StudentGrade, "5th", new { @class = "grade form-control" })
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="radio-check col-sm-5 col-md-3 col-lg-2">
+                                        6th
+                                        @Html.RadioButtonFor(m => m.StudentGrade, "6th", new { @class = "grade form-control" })
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="radio-check col-sm-5 col-md-3 col-lg-2">
+                                        7th
+                                        @Html.RadioButtonFor(m => m.StudentGrade, "7th", new { @class = "grade form-control" })
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="radio-check col-sm-5 col-md-3 col-lg-2">
+                                        8th
+                                        @Html.RadioButtonFor(m => m.StudentGrade, "8th", new { @class = "grade form-control" })
+                                        <span class="checkmark"></span>
+                                    </label>
+
+                                    @Html.ValidationMessageFor(model => model.StudentGrade, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.StudentSchool, htmlAttributes: new { @class = "control-label lbl-required" })
+                                @Html.TextAreaFor(model => model.StudentSchool, 2, 100, new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.StudentSchool) })
+                                @Html.ValidationMessageFor(model => model.StudentSchool, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Hobbies, htmlAttributes: new { @class = "control-label lbl" })
+                                @Html.TextAreaFor(model => model.Hobbies, 2, 100, new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Hobbies) })
+                                @Html.ValidationMessageFor(model => model.Hobbies, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Bio, htmlAttributes: new { @class = "control-label lbl" })
+                                @Html.TextAreaFor(model => model.Bio, 2, 100, new { @class = "form-control", placeholder = Html.DisplayNameFor(n => n.Bio) })
+                                @Html.ValidationMessageFor(model => model.Bio, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-12 text-center">
+                            <div class="form-group bottom-section">
+                                <hr />
+                                <input type="submit" value="Register As Student" class="btn submit-btn btn-success btn-lg" onclick="this.disabled=true;this.form.submit();" />&nbsp;
+                                @Html.ActionLink("Already have an account? Please SignIn", "Login", "Account", null, new { hidefocus = "hidefocus" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+<style>
+    .t-grade .radio-check {
+        display: inline-flex !important;
+    }
+
+    @@media only screen and (max-width: 767px) {
+        .bottom-section a {
+            margin-top: 12px;
+            display: block;
+        }
+    }
+
+    .custom-file-label {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+</style>

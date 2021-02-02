@@ -1,0 +1,378 @@
+﻿@using InstantTutors.Models.ViewModels
+@model LoginViewModel
+@{
+    ViewBag.Title = "Login";
+    var ShowVerificationLink = ViewBag.VerificationLink == null ? false : ViewBag.VerificationLink ? true : false;
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<section class="signin-sec">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-wraper card">
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <h4 class="form-heading">Sign In</h4>
+                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+                        <span class="d-block text-right span-label mb-1"><a href="/Home/Contact">Need Help?</a></span>
+                        <span class="input-text-group user-field mb-2" style="overflow: visible;">
+                            <span class="input-text-group__icon"><i class="fa fa-user" aria-hidden="true"></i></span>
+                            @Html.TextBoxFor(m => m.Email, new { @class = "input-text login-form-user" })
+                            <label class="label login-form-user-label">
+                                <span>Email address</span>
+                            </label>
+                        </span>
+                        <span class="d-block text-right span-label mb-1"><a href="/Account/ForgotPassword">Forgot Your Password?</a></span>
+                        <span class="input-text-group password-filed mb-3" style="overflow: visible;">
+                            <span class="input-text-group__icon">
+                                <i class="fa fa-lock" aria-hidden="true"></i>
+                            </span>
+                            @Html.PasswordFor(m => m.Password, new { @class = "input-text login-form-pwd", @id = "pwd-id" })
+                            <label class="label login-form-user-label">
+                                <span>Password</span>
+                            </label>
+                            <span id="pwd-unveil" class="input-text-group__icon" onclick="pwdUnveil(this)">
+                                <i id="eye" class="fa fa-eye" aria-hidden="true"></i>
+                            </span>
+                        </span>
+                        <div class="custom-control custom-checkbox mb-3">
+                            @Html.CheckBoxFor(m => m.RememberMe, new { @class = "custom-control-input", @id = "customCheck", name = "example1" })
+                            <label class="custom-control-label" for="customCheck">Remember me</label>
+                            @*<span>
+                    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                </span>*@
+                        </div>
+                        <button class="btn w-100" type="submit" onclick="this.disabled=true;this.form.submit();">Sign In</button>
+                    }
+
+                    @if (Model != null && ShowVerificationLink && false)
+                    {
+                        <div class="form-bottom">
+                            @Html.Raw(@ViewBag.resend)
+                            @using (Html.BeginForm("Resend", "Account", new { area = "", id = Model.Email }, FormMethod.Post, new { @class = "cls-resend", role = "form" }))
+                            {
+                            @Html.AntiForgeryToken()
+                            <div class=" text-danger">
+                                <ul>
+                                    <li>
+                                        Didn't received a verification link, click here to
+                                        <a href="javascript:void(0)" onclick="this.disabled=true;this.form.submit(); return false;" hidefocus="hidefocus">resend verification link</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            }
+                        </div>
+                    }
+                    <div class="form-bottom">
+                        <h5>
+                            Not an account yet?
+                            <small>
+                                Register As <a href="/Account/Student"> Student</a> or <a href="/Account/Tutor">Become a Tutor</a>
+                            </small>
+                        </h5>
+                    </div>
+
+                    <!--
+    <h4 class="sub-heading-form">More IONOS Logins</h4>
+    <div class="row">
+        <div class="col-4">
+            <div class="card text-center">
+                <img src="~/Content/images/web-email.svg">
+                <p class="mb-0">Webmail</p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card text-center">
+                <img src="~/Content/images/data-center.svg">
+                <p class="mb-0">Data Center Designer</p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card text-center">
+                <img src="~/Content/images/drive.svg">
+                <p class="mb-0">HiDrive</p>
+            </div>
+        </div>
+    </div>
+    -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function pwdUnveil(ev) {
+        var _pwdInput = document.getElementById("pwd-id");
+        if (_pwdInput.type === "password") {
+            _pwdInput.type = "text";
+            $("i#eye").addClass("fa-eye-slash").removeClass("fa-eye");
+        } else {
+            _pwdInput.type = "password";
+            $("i#eye").addClass("fa-eye").removeClass("fa-eye-slash");
+        }
+    }
+</script>
+
+<style>
+    .cls-resend{
+        padding:0px !important;
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0 30px white inset !important;
+    }
+
+    .signin-sec {
+        background-image: url(/Content/images/bg-login.png);
+        min-height: 520px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: bottom center;
+        padding: 64px 0;
+    }
+
+        .signin-sec .form-wraper {
+            padding: 14px 2px;
+            max-width: 490px;
+            margin: 0 auto;
+            -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.15), -1px 0 0 rgba(0, 0, 0, 0.03), 1px 0 1px rgba(0, 0, 0, 0.03), 0 1px 0 rgba(0, 0, 0, 0.12);
+            -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.15), -1px 0 0 rgba(0, 0, 0, 0.03), 1px 0 1px rgba(0, 0, 0, 0.03), 0 1px 0 rgba(0, 0, 0, 0.12);
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.15), -1px 0 0 rgba(0, 0, 0, 0.03), 1px 0 1px rgba(0, 0, 0, 0.03), 0 1px 0 rgba(0, 0, 0, 0.12);
+        }
+
+        .signin-sec form {
+            background: #fff;
+            padding: 30px;
+        }
+
+    .form-heading {
+        font-size: 24px;
+        margin-bottom: 16px;
+        font-weight: 500;
+        color: rgb(31, 40, 45);
+        text-align: center;
+    }
+
+    .span-label a {
+        color: rgb(11, 157, 204);
+        cursor: pointer;
+        font-size: 13px;
+        line-height: 1.5em;
+    }
+
+    .input-text-group {
+        background-color: #fff;
+        border: 1px solid #b3b6b8;
+        border-radius: 2px;
+        box-sizing: border-box;
+        display: flex;
+        position: relative;
+    }
+
+    .input-text-group__icon {
+        color: #50575b;
+        cursor: pointer;
+        display: inline-block;
+        flex: 0 1 0%;
+        font-size: 20px;
+        height: 22px;
+        line-height: 22px;
+        margin: 9px 2px;
+        padding: 0 8px;
+        transform: translateX(-1px);
+        vertical-align: top;
+        white-space: nowrap;
+        opacity: .8;
+    }
+
+    .input-text-group .input-text {
+        background: transparent;
+        border: none;
+        flex: 2 1 0%;
+        height: 40px;
+        line-height: 34px;
+        padding: 0;
+        position: relative;
+        z-index: 2;
+    }
+
+    .input-text {
+        background-color: #fff;
+        border: 1px solid #b3b6b8;
+        border-radius: 2px;
+        box-sizing: border-box;
+        color: #50575b;
+        display: inline-block;
+        font-size: 17px;
+        height: 36px;
+        padding: 0 12px;
+        width: 100%;
+    }
+
+    .login-form-user-label {
+        position: absolute;
+        top: 0;
+        margin: 6px 0 0 32px;
+        -webkit-transition: all .2s;
+        transition: all .2s;
+        opacity: .5;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 90%;
+        color: #50575bdb;
+        display: block;
+        line-height: 28px;
+        font-size: 17px;
+    }
+
+    form .top-bottom-border {
+        border-top-right-radius: .25rem !important;
+        border-bottom-right-radius: .25rem !important;
+    }
+
+    .custom-checkbox span i.fa {
+        color: rgb(11, 157, 204);
+        cursor: pointer;
+        font-size: 14px;
+        line-height: 1.5em;
+        text-decoration: none;
+    }
+
+    .form-wraper button {
+        background: rgb(11, 157, 204);
+        color: #fff;
+        font-size: 22px;
+        font-weight: 700;
+        height: 55px;
+        border-radius: 0;
+    }
+
+        .form-wraper button:hover {
+            border-color: #343434;
+            background: #343434;
+            color: #fff;
+        }
+
+    .form-bottom {
+        background: #fff;
+        padding: 5px 30px 15px;
+    }
+
+        .form-bottom h5 {
+            color: rgb(31, 40, 45);
+            font-size: 15px;
+            line-height: 1.5em;
+            margin-bottom: 6px;
+        }
+
+        .form-bottom p a {
+            color: rgb(11, 157, 204);
+            cursor: pointer;
+            font-size: 13px;
+            line-height: 1.5em;
+        }
+
+    .form-control:focus {
+        border-color: #ced4da;
+        box-shadow: none;
+    }
+
+    .sub-heading-form {
+        color: rgb(31, 40, 45);
+        line-height: 1.3333em;
+        font-size: 19px;
+        margin-bottom: 15px;
+    }
+
+    .form-wraper .card {
+        box-shadow: rgba(80, 87, 91, 0.24) 0px 1px 2px 0px;
+        background: rgb(255, 255, 255);
+        box-sizing: border-box;
+        color: rgb(11, 157, 204);
+        display: block;
+        position: relative;
+        padding: 16px;
+        text-decoration: none;
+        transition: all 0.1s ease-out 0s;
+        border: 0;
+        border-radius: 0;
+        min-height: 150px;
+    }
+
+        .form-wraper .card:hover {
+            box-shadow: rgba(80, 87, 91, 0.5) 0px 2px 8px 0px;
+        }
+
+        .form-wraper .card img {
+            height: 64px;
+        }
+
+        .form-wraper .card p {
+            font-size: 15px;
+            line-height: 22px;
+            margin: 8px auto;
+        }
+
+    .top_labelForm {
+        border-color: #0b9dcc;
+    }
+
+    input:focus {
+        outline: 0;
+    }
+
+    label.custom-control-label {
+        font-size: 14px;
+    }
+
+    .top_labelForm .login-form-user-label {
+        font-size: 75%;
+        transform: translate3d(-20px, -17px, 0px);
+        opacity: 1;
+        line-height: normal;
+    }
+
+        .top_labelForm .login-form-user-label span {
+            background: #fff;
+            padding: 0 2.5px;
+        }
+
+    body {
+        background: #f0f0f0;
+    }
+    /*Responsive css*/
+
+    @@media only screen and (max-width: 479px) {
+        .form-wraper .card {
+            padding: 10px 5px;
+            min-height: 110px;
+        }
+
+            .form-wraper .card img {
+                height: 45px;
+            }
+
+            .form-wraper .card p {
+                font-size: 12px;
+                line-height: 18px;
+                margin: 6px auto;
+            }
+    }
+    @@media only screen and (max-height: 1360px) and (min-width: 1024px) {
+        .signin-sec {
+            padding: 152px 0;
+        }
+    }
+    /*ul { list-style-type: "🔔"; }*/
+</style>

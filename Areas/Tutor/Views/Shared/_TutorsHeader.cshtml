@@ -1,0 +1,192 @@
+﻿
+<style>
+    
+    .top-container {
+        background-color: #f1f1f1;
+        text-align: center;
+    }
+
+    .header {
+        background: #f5f7f8;
+        color: #f1f1f1;
+        height: 94px;
+        padding: 15px 0px;
+        z-index: 99;
+        border-bottom: 1px solid #efefef;
+    }
+
+    .navbar-nav .nav-link {
+        color: rgba(0,0,0,.7);
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .navbar-nav a.nav-link {
+        text-transform: uppercase;
+    }
+    .content {
+        padding: 16px;
+    }
+
+    .sticky {
+        position: fixed;
+        top: 0;
+        width: 100%;
+    }
+
+        .sticky + .content {
+            padding-top: 102px;
+        }
+    /* Top bar */
+    .top-bar {
+        border-bottom: 1px solid #ececec;
+    }
+
+        .top-bar ul li {
+            float: left;
+            line-height: 45px;
+        }
+
+            .top-bar ul li,
+            .top-bar ul li a {
+                text-transform: uppercase;
+                font-weight: 500;
+                color: #8a8a8a;
+                font-family: "Montserrat";
+                font-size: 12px;
+            }
+
+        .top-bar .right li a {
+            color: #767676;
+            font-weight: 600;
+        }
+
+        .top-bar ul li a:hover {
+            color: #169eb7;
+        }
+
+    ul.social_links li {
+        border-right: 1px solid rgba(0,0,0,.1);
+        padding: 0 8px;
+        height: 14px;
+        line-height: 10px;
+    }
+button:focus {
+    outline: 0px dotted;
+    outline: 0px auto -webkit-focus-ring-color;
+}
+@@media only screen and (max-width: 1023px) and (min-width: 768px){
+.top-bar ul li, .top-bar ul li a {
+    font-size: 9px;
+}
+.navbar-nav .nav-link {
+    font-size: 10px;
+}
+}
+@@media only screen and (max-width: 479px){
+.top-bar ul li, .top-bar ul li a {
+    font-size: 8px;
+}
+}
+@@media only screen and (max-width: 767px){
+div#collapsibleNavbar {
+    background: #52c8e5;
+    padding: 20px;
+}
+div#collapsibleNavbar .nav-link {
+    color: #fff;
+}
+.header {
+    padding: 10px 15px;
+}
+.top-bar ul {
+    justify-content: center;
+    display: flex;
+    margin-bottom: 0;
+}
+.navbar-brand img {
+    width: 150px !important;
+}
+}
+</style>
+
+<div class="top-bar">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <ul class="list-unstyled">
+                    <li>
+                        <i class="fa fa-whatsapp" aria-hidden="true" style="color: green;"></i>&nbsp;
+                        <a href="tel:+1 954-907-1593">+1 954-907-1593</a> &nbsp;&nbsp;|&nbsp;&nbsp;
+                    </li>
+                    <li>Open&nbsp;hours : 10.00&nbsp;am EST - 7.00 pm EST&nbsp; MON- SAT</li>
+                </ul>
+            </div>
+            <div class="col-12 col-md-6 align-self-center mb-2 mb-md-0">
+                <ul class="social_links list-unstyled d-flex justify-content-md-end mb-0 justify-content-center">
+                    <li> <a href="#" rel="nofollow" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                    <li> <a href="#" rel="nofollow" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                    <li> <a href="#" rel="nofollow" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                    <li> <a href="#" rel="nofollow" target="_blank"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+                    <li> <span style="text-transform:lowercase"> <small>Logged-in as <b>Tutor</b>, </small> <a href="@Url.Action("Index", "Profile", new { area = "Tutor" })" style="text-transform:lowercase" rel="nofollow" hidefocus="hidefocus">@User.Identity.Name</a></span> </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<nav class="navbar navbar-expand-md header" id="myHeader">
+    <div class="container">
+        <!-- Brand -->
+        <a class="navbar-brand" href="@Url.Action("Index", "Dashboard", new { area = "Tutor" })"><img src="~/Content/images/logo.png" style="width:240px;" /></a>
+
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+        </button>
+
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="@Url.Action("Index", "Dashboard", new { area = "Tutor" })" class="nav-link" hidefocus="hidefocus">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="@Url.Action("Index", "Search", new { area = "Tutor" })" class="nav-link" hidefocus="hidefocus">
+                        Search
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="@Url.Action("Index", "Session", new { area = "Tutor" })" class="nav-link" hidefocus="hidefocus">Sessions</a>
+                </li>
+                <li class="nav-item">
+                    <a href="@Url.Action("Availability", "Session", new { area = "Tutor" })" class="nav-link" hidefocus="hidefocus">My Availability</a>
+                </li>
+                <li class="nav-item">
+                    <a href="@Url.Action("Index", "Profile", new { area = "Tutor" })" class="nav-link" hidefocus="hidefocus">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <form method="post" action="@Url.Action("LogOff", "Account", new { area = "" })" id="signoutfrm" style="display:none;">
+                        @Html.AntiForgeryToken()
+                    </form>
+                    <a href="javascript:void(0)" onclick="$('#signoutfrm').submit(); return false;" class="nav-link" hidefocus="hidefocus">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<script>
+    window.onscroll = function () { setHeader() };
+
+    var header = document.getElementById("myHeader");
+    var sticky = header.offsetTop;
+
+    function setHeader() {
+        if (window.pageYOffset > sticky) {
+            header.classList.add("sticky");
+        } else {
+            header.classList.remove("sticky");
+        }
+    }
+</script>
